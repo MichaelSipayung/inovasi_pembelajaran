@@ -1,0 +1,52 @@
+<% content_for :title, "Topics" %>
+
+<div class="w-full">
+  <!-- Notifikasi Flash Message -->
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-700 font-medium rounded-md inline-block border border-green-200" id="notice"><%= notice %></p>
+  <% end %>
+
+  <!-- Bagian Header -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="font-bold text-4xl text-gray-800">Daftar Bab</h1>
+    
+    <!-- Tombol Tambah Bab HANYA UNTUK DOSEN -->
+    <% if current_user && current_user.dosen? %>
+      <%= link_to "+ Bab Baru", new_topic_path, class: "rounded-md px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white block font-bold shadow-sm transition-colors" %>
+    <% end %>
+  </div>
+
+  <!-- Daftar Bab -->
+  <div id="topics" class="min-w-full divide-y divide-gray-200">
+    <% if @topics.any? %>
+      <% @topics.each do |topic| %>
+        <div class="flex flex-col sm:flex-row justify-between items-center py-5">
+          
+          <!-- Memanggil isi (judul & deskripsi) dari _topic.html.erb -->
+          <div class="w-full sm:w-2/3">
+            <%= render topic %>
+          </div>
+          
+          <!-- Kumpulan Tombol Aksi -->
+          <div class="w-full sm:w-auto flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
+            
+            <!-- Tombol Show (Bisa dilihat Mahasiswa & Dosen) -->
+            <%= link_to "Lihat Materi", topic, class: "w-full sm:w-auto text-center rounded-md px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 inline-block font-semibold transition-colors" %>
+            
+            <!-- Tombol Edit & Destroy HANYA UNTUK DOSEN -->
+            <% if current_user && current_user.dosen? %>
+              <%= link_to "Edit", edit_topic_path(topic), class: "w-full sm:w-auto text-center rounded-md px-4 py-2 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 inline-block font-semibold transition-colors" %>
+              
+              <%= button_to "Hapus", topic, method: :delete, class: "w-full sm:w-auto rounded-md px-4 py-2 text-white bg-red-500 hover:bg-red-600 font-semibold cursor-pointer transition-colors", form: { data: { turbo_confirm: "Yakin ingin menghapus bab ini beserta seluruh materinya?" } } %>
+            <% end %>
+
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="text-center py-10 bg-gray-50 rounded-lg border border-gray-200 mt-4">
+        <p class="text-gray-500 font-medium">Belum ada bab yang ditambahkan.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
