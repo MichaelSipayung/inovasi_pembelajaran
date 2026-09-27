@@ -1,1 +1,8 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+.quiz-content code {
+  @apply bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded text-sm font-mono;
+}
+.quiz-content pre {
+  @apply bg-gray-900 text-gray-100 p-3 rounded-lg overflow-x-auto text-sm my-2;
+}

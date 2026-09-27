@@ -68,3 +68,5 @@ group :test do
 end
 
 gem "devise"
+gem "redcarpet"   # parser Markdown -> HTML
+gem "rouge"       # syntax highlighting untuk blok kode C++

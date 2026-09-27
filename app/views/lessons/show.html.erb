@@ -19,8 +19,8 @@
         <ul class="space-y-3">
           <% @lesson.questions.each_with_index do |q, index| %>
             <li class="flex justify-between items-start border-b pb-2 text-sm">
-              <div class="text-gray-800 font-medium">
-                <%= index + 1 %>. <%= q.content %> <br>
+              <div class="text-gray-800 font-medium quiz-content">
+                <%= index + 1 %>. <%= markdown_inline(q.content) %> <br>
                 <span class="text-green-600 font-bold text-xs mt-1 block">Kunci: <%= q.correct_answer %></span>
               </div>
               <div class="flex gap-2 ml-4">
@@ -40,8 +40,19 @@
   <h1 class="text-3xl font-bold mb-6 text-blue-900"><%= @lesson.title %></h1>
 
   <!-- Konten Materi (Teks, Gambar, Penjelasan Algoritma) -->
-  <div class="prose max-w-none mb-10">
-    <%= @lesson.content %>
+  <%# <div class="prose max-w-none mb-10"> %>
+    <%# <%= @lesson.content %> 
+  <%# </div> %>
+  
+  <!-- Konten Materi (Teks, Gambar, Penjelasan Algoritma) -->
+  <div class="prose prose-slate max-w-none mb-10
+              prose-headings:text-blue-900 prose-headings:font-bold
+              prose-h1:text-3xl prose-h2:text-2xl prose-h2:border-b prose-h2:pb-2
+              prose-code:text-pink-600 prose-code:before:content-none prose-code:after:content-none
+              prose-pre:shadow-md
+              prose-table:border prose-th:bg-gray-100
+              prose-blockquote:border-blue-300 prose-blockquote:text-gray-600">
+    <%= markdown(@lesson.content) %>
   </div>
 
   <!-- Integrasi Compiler Explorer -->
@@ -102,16 +113,15 @@
         <%= form_with url: submit_quiz_lesson_path(@lesson), method: :post, local: true, class: "space-y-8" do |f| %>
           <% @lesson.questions.each_with_index do |question, index| %>
             <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
-              <p class="font-bold text-gray-800 mb-4"><%= index + 1 %>. <%= question.content %></p>
-              
+              <p class="font-bold text-gray-800 mb-4 quiz-content"><%= index + 1 %>. <%= markdown_inline(question.content) %></p>              
               <div class="space-y-3">
                 <% ['A', 'B', 'C', 'D'].each do |opt| %>
                   <label class="flex items-center space-x-3 cursor-pointer p-2 rounded hover:bg-white transition">
                     <%= radio_button_tag "answers[#{question.id}]", opt, false, class: "w-5 h-5 text-blue-600 focus:ring-blue-500", required: true %>
-                    <span class="text-gray-700 font-medium">
-                      <span class="font-bold mr-2"><%= opt %>.</span>
-                      <%= question.send("option_#{opt.downcase}") %>
-                    </span>
+                      <span class="text-gray-700 font-medium quiz-content">
+                        <span class="font-bold mr-2"><%= opt %>.</span>
+                        <%= markdown_inline(question.send("option_#{opt.downcase}")) %>
+                      </span>
                   </label>
                 <% end %>
               </div>
