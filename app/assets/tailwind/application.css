@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@import "../stylesheets/rouge_theme.css";
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "../stylesheets/rouge_theme.css";
 
 .prose pre, .prose code {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
